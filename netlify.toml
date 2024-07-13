@@ -1,0 +1,3 @@
+[build]
+  publish = "src"
+  functions = "functions"  # If you have serverless functions
