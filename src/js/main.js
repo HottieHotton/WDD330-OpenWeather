@@ -44,7 +44,7 @@ button.addEventListener("click", () => {
       //#8 Feature
       try {
         // Fetch the local JSON file
-        const response = await fetch("json/city.list.json");
+        const response = await fetch("/json/city.list.json");
         const cityData = await response.json();
 
         // Find the city by coordinates
