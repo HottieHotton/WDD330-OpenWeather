@@ -1,0 +1,117 @@
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    background-color: #0081AF;
+}
+
+header{
+    background-color: #00ABE7;
+    padding-top: .1px;
+}
+
+.title a{
+    text-decoration: none;
+    color: black;
+    vertical-align: middle;
+}
+
+.mainDetails img{
+    width: 50%;
+    height: 50%;
+}
+
+.mainDetails p a{
+    text-decoration: none;
+    color: black;
+}
+
+.choices{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 25px;
+}
+
+.choices div{
+    margin: 10px;
+    padding: 10px;
+    background-color: #2DC7FF;
+}
+
+.choices div h3 a{
+    text-decoration: none;
+    color: black;
+    font-size: larger;
+    padding: 35px
+}
+
+#container-openweathermap-widget-1{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+footer{
+    background-color: #00ABE7;
+    position: sticky;
+    margin-top: auto;
+    padding: 10px 10px 0px 10px;
+    bottom: 0;
+    width: calc(100% - 20px);
+    height: 40px;
+}
+
+.weekWeather{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.history h4{
+    font-size: larger;
+}
+.mobileLine{
+    display: none;
+}
+
+.detailedForecast{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr)
+}
+
+.card{
+    background-color: rgba(238, 235, 235, 0.562);
+    width: 75%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 1000px) {
+    .choices{
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr;
+    }
+    .mobileLine{
+        display: block;
+    }
+
+    .weekWeather{
+        display: grid;
+    }
+    .historySearch{
+        grid-column: span 2;
+        grid-row: 1/2;
+    }
+    .display{
+        grid-column: span 2;
+        grid-row: 2/2;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .detailedForecast{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

@@ -11,7 +11,11 @@ export default defineConfig({
     outDir: "../dist",
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "src/index.html")
+        main: resolve(__dirname, "src/index.html"),
+        week: resolve(__dirname, "src/pages/weather.html"),
+        detailed: resolve(__dirname, "src/pages/detailed.html"),
+        today: resolve(__dirname, "src/pages/today.html"),
+        pollution: resolve(__dirname, "src/pages/pollution.html"),
       },
     },
   },

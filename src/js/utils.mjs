@@ -28,8 +28,8 @@ export async function loadHeaderFooter() {
   const header = await loadTemplate("/partials/header.html");
   const footer = await loadTemplate("/partials/footer.html");
 
-  const headerElement = document.querySelector("#main-header");
-  const footerElement = document.querySelector("#footer");
+  const headerElement = document.querySelector("header");
+  const footerElement = document.querySelector("footer");
 
   renderWithTemplate(header, headerElement);
   renderWithTemplate(footer, footerElement);
@@ -45,3 +45,86 @@ export async function loadTemplate(path) {
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
+
+export async function getJSON(city, country) {
+  try {
+    const response = await fetch("../json/city-list.json");
+    const cityData = await response.json();
+    const data = findCityIdByName(cityData, city, country);
+    if (data) {
+      return data;
+    } else {
+      window.alert("City not found in the JSON file.");
+    }
+  } catch (error) {
+    console.error(
+      "Error fetching or processing the city list JSON file:",
+      error,
+    );
+    window.alert("Error fetching or processing the city list JSON file:",error)
+  }
+  (error) => {
+    console.error("Error getting geolocation:", error);
+    window.alert("Error getting geolocation:", error)
+  };
+
+  // eslint-disable-next-line no-shadow
+  function findCityIdByName(cityData, city, country) {
+    for (const location of cityData) {
+      if (
+        location.name.toLowerCase() == city.toLowerCase() &&
+        location.country.toLowerCase() == country.toLowerCase()
+      ) {
+        return location;
+      }
+    }
+    return null;
+  }
+}
+
+export async function handleSearchEvent() {
+  return new Promise((resolve) => {
+    const searchForm = document.getElementById("searchForm");
+    searchForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const search = document.getElementById("searchCall");
+        let searchList = await getLocalStorage("searchList") || [];
+        searchList.push(search.value);
+        await setLocalStorage("searchList", searchList);
+        resolve(search.value);
+    }, { once: true });
+});
+}
+
+export async function fetchWeatherAPI(...urls) {
+  try {
+      if (urls.length === 0 || urls.length > 4) {
+          throw new Error("Invalid number of arguments. This function accepts between 1 and 4 URLs.");
+      }
+
+      const responses = await Promise.all(urls.map(url => fetch(url)));
+
+      if (responses.every(response => response.ok)) {
+          const data = await Promise.all(responses.map(response => response.json()));
+          if(data.length > 1){
+            return data;
+          }else{
+            let jsonData = data[0]
+            return jsonData;
+          }
+      } else {
+          const errorResponse = responses.find(response => !response.ok);
+          throw new Error(await errorResponse.text());
+      }
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+
+// if(result[0].name.includes(" ")){
+//   let name = result[0].name.replace(/\s+/g, "-")
+//   let country = result[0].country;
+//   console.log(name)
+//   console.log(country)
+// }

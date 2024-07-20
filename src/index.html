@@ -1,14 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/style.css" />
     <script type="module" src="/js/main.js"></script>
-</head>
-<body>
-    <h1>Testing</h1>
-    <button class="testAPI">Get Location</button>
-    <div id="openweathermap-widget-11"></div>
-</body>
+    <script src="//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js"></script>
+  </head>
+  <body>
+    <header></header>
+    <div class="mainDetails">
+        <img src="./images/wolfgang-hasselmann-bR_-gllg7Bs-unsplash.webp" alt="CLoudy Sky">
+        <p>Photo by <a href="https://unsplash.com/@wolfgang_hasselmann?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Wolfgang Hasselmann</a> on <a href="https://unsplash.com/photos/blue-sky-and-white-clouds-over-lake-bR_-gllg7Bs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a></p>
+        <h3>This website is built for users to find weather for their own location and for the location of places that they wish to visit.</h3>
+    </div>
+    <div class="choices">
+      <div><h3><a href="./pages/weather.html">5/8 Day Weather + Widget</a></h3></div>
+      <div><h3><a href="./pages/detailed.html">3hr based Weather</a></h3></div>
+      <div><h3><a href="./pages/today.html">Today's Weather, Widget, and Today's pollution</a></h3></div>
+      <div><h3><a href="./pages/pollution.html">Pollution Forecase for the week</a></h3></div>
+    </div>
+    <footer></footer>
+  </body>
 </html>
