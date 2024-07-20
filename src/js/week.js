@@ -98,14 +98,14 @@ button.addEventListener("click", () => {
     let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${key}&units=imperial`;
     let currenturl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${key}&units=imperial`;
     if (window.innerWidth > 600) {
-      const geo = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&appid=${key}`;
+      const geo = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&appid=${key}`;
       let result = await fetchWeatherAPI(geo);
       let city = result[0].name;
       let country = result[0].country;
       let data = await getJSON(city, country);
       createWeatherWidget(data);
     } else {
-      const geo = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&appid=${key}`;
+      const geo = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&appid=${key}`;
       let result = await fetchWeatherAPI(geo);
       let city = result[0].name;
       let country = result[0].country;
