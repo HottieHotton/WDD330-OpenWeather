@@ -3,7 +3,8 @@ import {
   getJSON,
   fetchWeatherAPI,
   getLocalStorage,
-  setLocalStorage
+  setLocalStorage,
+  loadHistory
 } from "./utils.mjs";
 const key = import.meta.env.VITE_OPENWEATHER_KEY;
 const button = document.querySelector(".testAPI");
@@ -28,19 +29,6 @@ async function newRequests() {
     await setLocalStorage("searchList", recent);
     let lastValue = recent[recent.length - 1];
     await weatherAPI(lastValue)
-  }
-}
-
-async function loadHistory() {
-  let section = document.querySelector(".history");
-  let response = (await getLocalStorage("searchList")) || [];
-  if (response.length >= 1) {
-    section.innerHTML = ""
-    response.splice(-5).forEach((list) => {
-      let h4 = document.createElement("h4");
-      h4.innerHTML = `${list}`;
-      section.append(h4);
-    });
   }
 }
 

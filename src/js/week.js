@@ -3,7 +3,8 @@ import {
   handleSearchEvent,
   fetchWeatherAPI,
   getLocalStorage,
-  setLocalStorage
+  setLocalStorage,
+  loadHistory
 } from "./utils.mjs";
 
 const key = import.meta.env.VITE_OPENWEATHER_KEY;
@@ -27,18 +28,6 @@ async function newRequests() {
     await setLocalStorage("searchList", recent);
     let lastValue = recent[recent.length - 1];
     await weatherAPI(lastValue)
-  }
-}
-
-async function loadHistory(){
-  let section = document.querySelector(".history");
-  let response = await getLocalStorage("searchList") || [];
-  if(response.length >= 1){
-    response.splice(-5).forEach((list) =>{
-      let h4 = document.createElement("h4");
-      h4.innerHTML = `${list}`;
-      section.append(h4);
-    });
   }
 }
 
@@ -119,18 +108,6 @@ button.addEventListener("click", () => {
       const current = data[1];
       displayResults(week, current);
     }
-
-    //For Mutli-name cities, will need to fix string to remove space and add - instead for API purposes
-    //#2 feature
-    //#3 feature
-    //#4 feature
-    // const getCoordsInUS = `http://api.openweathermap.org/geo/1.0/direct?q=${cityLink},${state},${country}&appid=${key}&units=imperial`;
-    //#5 feature
-    // const getCoords = `http://api.openweathermap.org/geo/1.0/direct?q=${cityGB},${countryGB}&appid=${key}&units=imperial`;
-    //#6 feature
-    // const currentPollution = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
-    //#7 feature
-    // const forecastPollution = `http://api.openweathermap.org/data/2.5/air_pollution/forecast?lat=${lat}&lon=${long}&appid=${key}`;
   });
 });
 

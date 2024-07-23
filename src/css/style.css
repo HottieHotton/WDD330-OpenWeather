@@ -47,7 +47,7 @@ header{
     padding: 35px
 }
 
-#container-openweathermap-widget-1{
+#container-openweathermap-widget-1, #container-openweathermap-widget-5{
     display: flex;
     justify-content: center;
     text-align: center;
@@ -87,6 +87,11 @@ footer{
     margin-bottom: 10px;
 }
 
+.airPollution{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr)
+}
+
 @media screen and (max-width: 1000px) {
     .choices{
         grid-template-columns: none;
@@ -106,6 +111,10 @@ footer{
     .display{
         grid-column: span 2;
         grid-row: 2/2;
+    }
+    .airPollution{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr)
     }
 }
 

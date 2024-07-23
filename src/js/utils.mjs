@@ -122,9 +122,15 @@ export async function fetchWeatherAPI(...urls) {
 }
 
 
-// if(result[0].name.includes(" ")){
-//   let name = result[0].name.replace(/\s+/g, "-")
-//   let country = result[0].country;
-//   console.log(name)
-//   console.log(country)
-// }
+export async function loadHistory() {
+  let section = document.querySelector(".history");
+  let response = (await getLocalStorage("searchList")) || [];
+  if (response.length >= 1) {
+    section.innerHTML = "";
+    response.splice(-5).forEach((list) => {
+      let h4 = document.createElement("h4");
+      h4.innerHTML = `${list}`;
+      section.append(h4);
+    });
+  }
+}

@@ -3,15 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Today's Forecast</title>
+    <title>Today's Weather</title>
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/style.css" />
+    <script type="module" src="/js/main.js"></script>
     <script type="module" src="/js/today.js"></script>
+    <script src="//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js"></script>
   </head>
   <body>
     <header></header>
-    <main>
-      <div>
+    <main class="dayWeather">
+      <div class="historySearch">
+        <h2>Search for Cities</h2>
         <form id="searchForm">
           <input
             id="searchCall"
@@ -26,6 +29,16 @@
         </form>
         <h2>OR</h2>
         <button class="testAPI">Get Location</button>
+        <h3>History(Show's your last 5 searches)</h3>
+        <hr>
+        <section class="history"></section>
+      </div>
+      <div class="display">
+        <h2 class="cityTitle"></h2>
+        <hr class="mobileLine">
+        <div class="forecast"></div>
+        <div id="openweathermap-widget-5"></div>
+        <div class="pollution"></div>
       </div>
     </main>
     <footer></footer>
