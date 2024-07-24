@@ -85,15 +85,23 @@ export async function getJSON(city, country) {
 export async function handleSearchEvent() {
   return new Promise((resolve) => {
     const searchForm = document.getElementById("searchForm");
-    searchForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const search = document.getElementById("searchCall");
-        let searchList = await getLocalStorage("searchList") || [];
-        searchList.push(search.value);
-        await setLocalStorage("searchList", searchList);
-        resolve(search.value);
-    }, { once: true });
-});
+    // const searchButton = document.getElementById("searchButton");
+    searchForm.removeEventListener("submit", handleEvent);
+
+    async function handleEvent() {
+      event.preventDefault();
+      const search = document.getElementById("searchCall");
+      let searchList = await getLocalStorage("searchList") || [];
+      searchList.push(search.value);
+      await setLocalStorage("searchList", searchList);
+      console.log("Hit")
+      resolve(search.value);
+    }
+
+
+    searchForm.addEventListener("submit", handleEvent, { once: true });
+    // searchButton.addEventListener("click", handleEvent);
+  });
 }
 
 export async function fetchWeatherAPI(...urls) {

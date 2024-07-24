@@ -1,10 +1,11 @@
+/* eslint-disable no-constant-condition */
 import {
   handleSearchEvent,
   getJSON,
   fetchWeatherAPI,
   getLocalStorage,
   setLocalStorage,
-  loadHistory
+  loadHistory,
 } from "./utils.mjs";
 const key = import.meta.env.VITE_OPENWEATHER_KEY;
 const button = document.querySelector(".testAPI");
@@ -20,19 +21,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function newRequests() {
-  let data = await handleSearchEvent();
-  try {
-    await weatherAPI(data);
-  } catch (error) {
-    let recent = await getLocalStorage("searchList");
-    recent.pop();
-    await setLocalStorage("searchList", recent);
-    let lastValue = recent[recent.length - 1];
-    await weatherAPI(lastValue);
+  while (true) {
+    let data = await handleSearchEvent();
+    try {
+      await weatherAPI(data);
+    } catch (error) {
+      let recent = await getLocalStorage("searchList");
+      recent.pop();
+      await setLocalStorage("searchList", recent);
+      let lastValue = recent[recent.length - 1];
+      await weatherAPI(lastValue);
+    }
   }
 }
-
-
 
 async function weatherAPI(search) {
   let location = search.split(", ");

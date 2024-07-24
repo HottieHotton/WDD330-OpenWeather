@@ -1,10 +1,11 @@
+/* eslint-disable no-constant-condition */
 import {
   getJSON,
   handleSearchEvent,
   fetchWeatherAPI,
   getLocalStorage,
   setLocalStorage,
-  loadHistory
+  loadHistory,
 } from "./utils.mjs";
 
 const key = import.meta.env.VITE_OPENWEATHER_KEY;
@@ -13,21 +14,27 @@ let lat, long;
 let previousWidthState = "";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const defaultValue = "Seattle, US";
-  await weatherAPI(defaultValue);
+  let recent = (await getLocalStorage("searchList")) || "Seattle, US";
+  if (Array.isArray(recent)) {
+    recent = recent[recent.length - 1];
+  }
+  await weatherAPI(recent);
   await newRequests();
 });
 
 async function newRequests() {
-  let data = await handleSearchEvent();
-  try {
-    await weatherAPI(data);
-  } catch (error) {
-    let recent = await getLocalStorage("searchList")
-    recent.pop()
-    await setLocalStorage("searchList", recent);
-    let lastValue = recent[recent.length - 1];
-    await weatherAPI(lastValue)
+  while (true) {
+    let data = await handleSearchEvent();
+    console.log(data);
+    try {
+      await weatherAPI(data);
+    } catch (error) {
+      let recent = await getLocalStorage("searchList");
+      recent.pop();
+      await setLocalStorage("searchList", recent);
+      let lastValue = recent[recent.length - 1];
+      await weatherAPI(lastValue);
+    }
   }
 }
 
@@ -165,7 +172,7 @@ async function handleResize() {
     let [city, country] = recent.split(", ");
     let jsonData = await getJSON(city, country);
     await createWeatherWidget(jsonData);
-  } 
+  }
   if (window.innerWidth <= 700 && previousWidthState != "narrow") {
     previousWidthState = "narrow";
     widget.style.display = "none";

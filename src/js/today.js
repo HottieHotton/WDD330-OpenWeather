@@ -4,7 +4,7 @@ import {
   fetchWeatherAPI,
   getLocalStorage,
   setLocalStorage,
-  loadHistory
+  loadHistory,
 } from "./utils.mjs";
 
 const key = import.meta.env.VITE_OPENWEATHER_KEY;
@@ -13,21 +13,27 @@ let lat, long;
 let previousWidthState = "";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const defaultValue = "Seattle, US";
-  await weatherAPI(defaultValue);
+  let recent = (await getLocalStorage("searchList")) || "Seattle, US";
+  if (Array.isArray(recent)) {
+    recent = recent[recent.length - 1];
+  }
+  await weatherAPI(recent);
   await newRequests();
 });
 
 async function newRequests() {
-  let data = await handleSearchEvent();
-  try {
-    await weatherAPI(data);
-  } catch (error) {
-    let recent = await getLocalStorage("searchList");
-    recent.pop();
-    await setLocalStorage("searchList", recent);
-    let lastValue = recent[recent.length - 1];
-    await weatherAPI(lastValue);
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    let data = await handleSearchEvent();
+    try {
+      await weatherAPI(data);
+    } catch (error) {
+      let recent = await getLocalStorage("searchList");
+      recent.pop();
+      await setLocalStorage("searchList", recent);
+      let lastValue = recent[recent.length - 1];
+      await weatherAPI(lastValue);
+    }
   }
 }
 
@@ -42,7 +48,7 @@ async function weatherAPI(search) {
   } else {
     lat = data.coord.lat;
     long = data.coord.lon;
-    const pollutionUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
+    const pollutionUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
     const currenturl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${key}&units=imperial`;
     let response = await fetchWeatherAPI(pollutionUrl, currenturl);
     const pollution = response[0];
@@ -84,7 +90,7 @@ button.addEventListener("click", () => {
   navigator.geolocation.getCurrentPosition(async (position) => {
     lat = position.coords.latitude;
     long = position.coords.longitude;
-    let pollutionUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
+    let pollutionUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
     let currenturl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${key}&units=imperial`;
     if (window.innerWidth > 600) {
       const geo = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${long}&appid=${key}`;
@@ -101,7 +107,7 @@ button.addEventListener("click", () => {
       let jsonData = await getJSON(city, country);
       lat = jsonData.coord.lat;
       long = jsonData.coord.lon;
-      pollutionUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
+      pollutionUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
       currenturl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${key}&units=imperial`;
       let data = await fetchWeatherAPI(pollutionUrl, currenturl);
       const pollution = data[0];
@@ -167,9 +173,9 @@ async function handleResize() {
     await createWeatherWidget(jsonData);
     lat = jsonData.coord.lat;
     long = jsonData.coord.lon;
-    let url = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
+    let url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
     let result = await fetchWeatherAPI(url);
-    await displayResults(null, result)
+    await displayResults(null, result);
   }
   if (window.innerWidth <= 700 && previousWidthState != "narrow") {
     previousWidthState = "narrow";
@@ -184,7 +190,7 @@ async function handleResize() {
     let jsonData = await getJSON(city, country);
     lat = jsonData.coord.lat;
     long = jsonData.coord.lon;
-    let url = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
+    let url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${long}&appid=${key}`;
     let currenturl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${key}&units=imperial`;
     let data = await fetchWeatherAPI(url, currenturl);
     const pollution = data[0];
